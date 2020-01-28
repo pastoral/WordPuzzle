@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.munirs.wordpuzzle.databinding.FragmentPuzzleBinding
 import kotlinx.android.synthetic.main.fragment_puzzle.*
@@ -22,20 +23,27 @@ import kotlin.collections.ArrayList
 class FragmentPuzzle : Fragment() {
 
     lateinit var binding : FragmentPuzzleBinding
-    var score = 0
-    var word:WordPuzzleData? = null
-    lateinit var words : ArrayList<WordPuzzleData>
+    private lateinit var puzzleViewModel: PuzzleViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_puzzle,container,false)
-        loadData()
-        nextWord()
-        binding.btnOK.setOnClickListener { checkAnswer() }
-        binding.btnSkip.setOnClickListener { onSkip() }
-//        updateScore()
-////        updateWord()
+        puzzleViewModel = ViewModelProvider(this).get(PuzzleViewModel::class.java)
+        binding.btnOK.setOnClickListener {
+            checkAnswer()
+            updateScore()
+            updateWord()
+        }
+        binding.btnSkip.setOnClickListener {
+            puzzleViewModel.onSkip()
+            updateScore()
+            updateWord()
+        }
+        updateScore()
+        updateWord()
+
         return binding.root
     }
 
@@ -46,64 +54,36 @@ class FragmentPuzzle : Fragment() {
 
     }
 
-    private fun loadData(){
-         words = arrayListOf(
-            WordPuzzleData("BOT","LE","T"),
-            WordPuzzleData("EX","EPTION","C"),
-            WordPuzzleData("PROCA","TINATION","S"),
-            WordPuzzleData("INF","LTRATE","I"),
-            WordPuzzleData("REC","NCILE","O")
-            )
-        words.shuffle()
-    }
 
-    private fun nextWord(){
-        if(words.isEmpty()){
-            gameOver()
-        }
-        else{
-            word = words.removeAt(0)
-
-        }
-        updateWord()
-        updateScore()
-        binding.invalidateAll()
-    }
 
 
 
 
     private fun gameOver(){
-        val action = FragmentPuzzleDirections.actionFragmentPuzzleToFragmentGameOver(score)
+        val action = FragmentPuzzleDirections.actionFragmentPuzzleToFragmentGameOver(puzzleViewModel.score)
         findNavController().navigate(action)
 
     }
 
     fun updateWord(){
-        var temp = word
-        binding.textAnswerBox1.text=word?.question_gap_1
-        binding.textAnswerBox2.text = word?.question_gap_2
+        binding.textAnswerBox1.text=puzzleViewModel.word?.question_gap_1
+        binding.textAnswerBox2.text = puzzleViewModel.word?.question_gap_2
     }
 
     fun updateScore(){
-        binding.textScore.text = score?.toString()
+        binding.textScore.text = puzzleViewModel.score?.toString()
     }
 
     fun checkAnswer(){
-        if(text_answer_gap.text.toString().toUpperCase() == word?.corrctAnswer){
+        if(text_answer_gap.text.toString().toUpperCase() == puzzleViewModel.word?.corrctAnswer){
             text_answer_gap.text  = null
-            score++
-            nextWord()
+            puzzleViewModel.onCorrect()
         }
         else{
             text_answer_gap.text  = null
-            score--
-            nextWord()
+            puzzleViewModel.onWrong()
         }
     }
 
-    fun onSkip(){
-        score--
-        nextWord()
-    }
+
 }
