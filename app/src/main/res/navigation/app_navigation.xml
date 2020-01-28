@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/app_navigation"
+    app:startDestination="@id/titleFragment">
+
+    <fragment
+        android:id="@+id/titleFragment"
+        android:name="com.munirs.wordpuzzle.TitleFragment"
+        android:label="TitleFragment" >
+        <action
+            android:id="@+id/action_titleFragment_to_fragmentPuzzle"
+            app:destination="@id/fragmentPuzzle"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPuzzle"
+        android:name="com.munirs.wordpuzzle.FragmentPuzzle"
+        android:label="FragmentPuzzle" >
+        <action
+            android:id="@+id/action_fragmentPuzzle_to_fragmentGameOver"
+            app:destination="@id/fragmentGameOver"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentGameOver"
+        android:name="com.munirs.wordpuzzle.FragmentGameOver"
+        android:label="FragmentGameOver" >
+        <argument
+            android:name="score"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_fragmentGameOver_to_titleFragment2"
+            app:destination="@id/titleFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@+id/titleFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+</navigation>
