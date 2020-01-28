@@ -48,11 +48,11 @@ class FragmentPuzzle : Fragment() {
 
     private fun loadData(){
          words = arrayListOf(
-            WordPuzzleData("BOT",binding.textAnswerGap.text.toString(),"LE","T"),
-            WordPuzzleData("EX",binding.textAnswerGap.text.toString(),"EPTION","C"),
-            WordPuzzleData("PROCA",binding.textAnswerGap.text.toString(),"TINATION","S"),
-            WordPuzzleData("INF",binding.textAnswerGap.text.toString(),"LTRATE","I"),
-            WordPuzzleData("REC",binding.textAnswerGap.text.toString(),"NCILE","O")
+            WordPuzzleData("BOT","LE","T"),
+            WordPuzzleData("EX","EPTION","C"),
+            WordPuzzleData("PROCA","TINATION","S"),
+            WordPuzzleData("INF","LTRATE","I"),
+            WordPuzzleData("REC","NCILE","O")
             )
         words.shuffle()
     }
