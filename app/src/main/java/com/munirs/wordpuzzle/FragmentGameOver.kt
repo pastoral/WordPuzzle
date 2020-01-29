@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.munirs.wordpuzzle.databinding.FragmentGameOverBinding
@@ -19,6 +21,8 @@ import kotlinx.android.synthetic.main.fragment_game_over.*
  */
 class FragmentGameOver : Fragment() {
     lateinit var binding: FragmentGameOverBinding
+    lateinit var gameOverViewModel: GameOverViewModel
+    lateinit var scoreViewModelFactory: ScoreViewModelFactory
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +34,8 @@ class FragmentGameOver : Fragment() {
 ////            findNavController().navigate(action)
             Navigation.findNavController(it).navigate(R.id.action_fragmentGameOver_to_titleFragment2)
         }
+
+
         return binding.root
     }
 
@@ -37,7 +43,14 @@ class FragmentGameOver : Fragment() {
         super.onActivityCreated(savedInstanceState)
         arguments?.let {
             val args = FragmentGameOverArgs.fromBundle(it)
-            text_final_score.text = args.score.toString()
+
+
+            scoreViewModelFactory = ScoreViewModelFactory(args.score)
+            gameOverViewModel = ViewModelProvider(this,scoreViewModelFactory).get(GameOverViewModel::class.java)
+            gameOverViewModel.score.observe(viewLifecycleOwner, Observer {
+                text_final_score.text = it.toString()
+            })
+
         }
 
     }
