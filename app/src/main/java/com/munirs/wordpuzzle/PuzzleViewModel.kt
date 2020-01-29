@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 
 class PuzzleViewModel : ViewModel() {
     val score = MutableLiveData<Int>()
-    private val _word = MutableLiveData<WordPuzzleData>()
-    val word : LiveData<WordPuzzleData> get() = _word
+    val word = MutableLiveData<WordPuzzleData>()
+
     val gameFinish = MutableLiveData<Boolean>()
     val DONE = 0L
     // This is the number of milliseconds in a second
@@ -59,7 +59,7 @@ class PuzzleViewModel : ViewModel() {
             loadData()
         }
         //else{
-            _word.value = words.removeAt(0)
+            word.value = words.removeAt(0)
 
         //}
     }
