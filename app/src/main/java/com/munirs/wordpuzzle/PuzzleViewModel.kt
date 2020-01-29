@@ -1,8 +1,10 @@
 package com.munirs.wordpuzzle
 
 import android.os.CountDownTimer
+import android.text.format.DateUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 class PuzzleViewModel : ViewModel() {
@@ -18,7 +20,9 @@ class PuzzleViewModel : ViewModel() {
    lateinit var timer : CountDownTimer
     val currentTime = MutableLiveData<Long>()
 
-
+    var currentTimeString = Transformations.map(currentTime, {
+        DateUtils.formatElapsedTime(it)
+    })
 
 
     lateinit var words : ArrayList<WordPuzzleData>

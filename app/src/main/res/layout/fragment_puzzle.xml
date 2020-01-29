@@ -29,7 +29,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="10:30" />
+            tools:text="@{puzzleModel.currentTimeString}" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

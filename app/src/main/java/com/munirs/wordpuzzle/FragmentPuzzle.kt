@@ -48,9 +48,9 @@ class FragmentPuzzle : Fragment() {
         })
 
 
-        puzzleViewModel.currentTime.observe(viewLifecycleOwner, Observer {
-            text_timer.text = DateUtils.formatElapsedTime(it)
-        })
+//        puzzleViewModel.currentTime.observe(viewLifecycleOwner, Observer {
+//            text_timer.text = DateUtils.formatElapsedTime(it)
+//        })
 
         binding.btnOK.setOnClickListener {
             checkAnswer()
