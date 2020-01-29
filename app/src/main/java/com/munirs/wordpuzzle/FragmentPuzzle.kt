@@ -39,10 +39,7 @@ class FragmentPuzzle : Fragment() {
         puzzleViewModel = ViewModelProvider(this).get(PuzzleViewModel::class.java)
 
         binding.lifecycleOwner = this
-        
-       puzzleViewModel.score.observe(viewLifecycleOwner, Observer {
-           binding.textScore.text = it.toString()
-       })
+
 
         puzzleViewModel.gameFinish.observe(viewLifecycleOwner, Observer {
             if(it){
@@ -50,10 +47,6 @@ class FragmentPuzzle : Fragment() {
             }
         })
 
-        puzzleViewModel.word.observe(viewLifecycleOwner, Observer {
-            binding.textAnswerBox1.text=puzzleViewModel.word.value?.question_gap_1
-            binding.textAnswerBox2.text = puzzleViewModel.word.value?.question_gap_2
-        })
 
         puzzleViewModel.currentTime.observe(viewLifecycleOwner, Observer {
             text_timer.text = DateUtils.formatElapsedTime(it)
@@ -62,23 +55,15 @@ class FragmentPuzzle : Fragment() {
         binding.btnOK.setOnClickListener {
             checkAnswer()
         }
-        binding.btnSkip.setOnClickListener {
-            puzzleViewModel.onSkip()
-        }
+
+        binding.puzzleModel = puzzleViewModel
         return binding.root
     }
-
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
     }
-
-
-
-
-
 
     private fun gameOver(){
         val action = FragmentPuzzleDirections.actionFragmentPuzzleToFragmentGameOver(puzzleViewModel.score.value?:0)
@@ -87,7 +72,6 @@ class FragmentPuzzle : Fragment() {
 //        Toast.makeText(activity,"Game Over", Toast.LENGTH_SHORT).show()
 
     }
-
 
 
     fun checkAnswer(){

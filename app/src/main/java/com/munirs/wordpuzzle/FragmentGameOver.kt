@@ -47,9 +47,8 @@ class FragmentGameOver : Fragment() {
 
             scoreViewModelFactory = ScoreViewModelFactory(args.score)
             gameOverViewModel = ViewModelProvider(this,scoreViewModelFactory).get(GameOverViewModel::class.java)
-            gameOverViewModel.score.observe(viewLifecycleOwner, Observer {
-                text_final_score.text = it.toString()
-            })
+
+            binding.gameOverModel = gameOverViewModel
 
         }
 

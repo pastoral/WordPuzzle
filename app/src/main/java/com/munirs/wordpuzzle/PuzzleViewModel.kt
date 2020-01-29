@@ -1,12 +1,14 @@
 package com.munirs.wordpuzzle
 
 import android.os.CountDownTimer
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class PuzzleViewModel : ViewModel() {
     val score = MutableLiveData<Int>()
-    val word = MutableLiveData<WordPuzzleData>()
+    private val _word = MutableLiveData<WordPuzzleData>()
+    val word : LiveData<WordPuzzleData> get() = _word
     val gameFinish = MutableLiveData<Boolean>()
     val DONE = 0L
     // This is the number of milliseconds in a second
@@ -57,7 +59,7 @@ class PuzzleViewModel : ViewModel() {
             loadData()
         }
         //else{
-            word.value = words.removeAt(0)
+            _word.value = words.removeAt(0)
 
         //}
     }
