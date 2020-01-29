@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 class PuzzleViewModel : ViewModel() {
     val score = MutableLiveData<Int>()
     val word = MutableLiveData<WordPuzzleData>()
+    val gameFinish = MutableLiveData<Boolean>()
+
 
 
     lateinit var words : ArrayList<WordPuzzleData>
@@ -13,6 +15,7 @@ class PuzzleViewModel : ViewModel() {
         loadData()
         nextWord()
         score.value = 0
+        gameFinish.value = false
     }
 
     private fun loadData(){
@@ -29,6 +32,7 @@ class PuzzleViewModel : ViewModel() {
     private fun nextWord(){
         if(words.isEmpty()){
 //            gameOver()
+            gameFinish.value = true
         }
         else{
             word.value = words.removeAt(0)
@@ -47,5 +51,9 @@ class PuzzleViewModel : ViewModel() {
     fun onSkip(){
         score.value = (score.value)?.minus(1)
         nextWord()
+    }
+
+    fun onGameOver(){
+        gameFinish.value = false
     }
 }

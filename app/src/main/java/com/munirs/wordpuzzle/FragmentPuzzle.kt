@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
@@ -40,21 +41,23 @@ class FragmentPuzzle : Fragment() {
            binding.textScore.text = it.toString()
        })
 
+        puzzleViewModel.gameFinish.observe(viewLifecycleOwner, Observer {
+            if(it){
+                gameOver()
+            }
+        })
+
         puzzleViewModel.word.observe(viewLifecycleOwner, Observer {
             binding.textAnswerBox1.text=puzzleViewModel.word.value?.question_gap_1
             binding.textAnswerBox2.text = puzzleViewModel.word.value?.question_gap_2
         })
-
 
         binding.btnOK.setOnClickListener {
             checkAnswer()
         }
         binding.btnSkip.setOnClickListener {
             puzzleViewModel.onSkip()
-
         }
-
-
         return binding.root
     }
 
@@ -73,6 +76,8 @@ class FragmentPuzzle : Fragment() {
     private fun gameOver(){
         val action = FragmentPuzzleDirections.actionFragmentPuzzleToFragmentGameOver(puzzleViewModel.score.value?:0)
         findNavController().navigate(action)
+        puzzleViewModel.onGameOver()
+//        Toast.makeText(activity,"Game Over", Toast.LENGTH_SHORT).show()
 
     }
 
