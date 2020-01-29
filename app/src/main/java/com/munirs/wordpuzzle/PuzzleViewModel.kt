@@ -1,5 +1,6 @@
 package com.munirs.wordpuzzle
 
+import android.os.CountDownTimer
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -7,6 +8,14 @@ class PuzzleViewModel : ViewModel() {
     val score = MutableLiveData<Int>()
     val word = MutableLiveData<WordPuzzleData>()
     val gameFinish = MutableLiveData<Boolean>()
+    val DONE = 0L
+    // This is the number of milliseconds in a second
+    val ONE_SECOND = 1000L
+    // This is the total time of the game
+   val COUNTDOWN_TIME = 10000L
+   lateinit var timer : CountDownTimer
+    val currentTime = MutableLiveData<Long>()
+
 
 
 
@@ -16,6 +25,18 @@ class PuzzleViewModel : ViewModel() {
         nextWord()
         score.value = 0
         gameFinish.value = false
+
+        timer = object :CountDownTimer(COUNTDOWN_TIME,ONE_SECOND){
+            override fun onTick(millisUntilFinished: Long) {
+                currentTime.value = millisUntilFinished/ONE_SECOND
+            }
+
+            override fun onFinish() {
+                gameFinish.value = true
+                currentTime.value = DONE
+            }
+        }
+        timer.start()
     }
 
     private fun loadData(){
@@ -32,12 +53,13 @@ class PuzzleViewModel : ViewModel() {
     private fun nextWord(){
         if(words.isEmpty()){
 //            gameOver()
-            gameFinish.value = true
+            //gameFinish.value = true
+            loadData()
         }
-        else{
+        //else{
             word.value = words.removeAt(0)
 
-        }
+        //}
     }
 
     fun onCorrect(){
@@ -56,4 +78,11 @@ class PuzzleViewModel : ViewModel() {
     fun onGameOver(){
         gameFinish.value = false
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        timer.cancel()
+    }
+
+
 }

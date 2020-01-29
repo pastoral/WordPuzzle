@@ -2,6 +2,8 @@ package com.munirs.wordpuzzle
 
 
 import android.os.Bundle
+import android.text.format.DateUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.munirs.wordpuzzle.databinding.FragmentPuzzleBinding
 import kotlinx.android.synthetic.main.fragment_puzzle.*
 import kotlinx.android.synthetic.main.fragment_title.*
+import java.text.DateFormat
 
 import java.util.*
 import kotlin.collections.ArrayList
@@ -50,6 +53,10 @@ class FragmentPuzzle : Fragment() {
         puzzleViewModel.word.observe(viewLifecycleOwner, Observer {
             binding.textAnswerBox1.text=puzzleViewModel.word.value?.question_gap_1
             binding.textAnswerBox2.text = puzzleViewModel.word.value?.question_gap_2
+        })
+
+        puzzleViewModel.currentTime.observe(viewLifecycleOwner, Observer {
+            text_timer.text = DateUtils.formatElapsedTime(it)
         })
 
         binding.btnOK.setOnClickListener {
