@@ -1,14 +1,18 @@
 package com.munirs.wordpuzzle
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class PuzzleViewModel : ViewModel() {
-    var score = 0
-    var word:WordPuzzleData? = null
+    val score = MutableLiveData<Int>()
+    val word = MutableLiveData<WordPuzzleData>()
+
+
     lateinit var words : ArrayList<WordPuzzleData>
     init{
         loadData()
         nextWord()
+        score.value = 0
     }
 
     private fun loadData(){
@@ -27,21 +31,21 @@ class PuzzleViewModel : ViewModel() {
 //            gameOver()
         }
         else{
-            word = words.removeAt(0)
+            word.value = words.removeAt(0)
 
         }
     }
 
     fun onCorrect(){
-        score++
+        score.value = (score.value)?.plus(1)
         nextWord()
     }
     fun onWrong(){
-        score--
+        score.value = (score.value)?.minus(1)
         nextWord()
     }
     fun onSkip(){
-        score--
+        score.value = (score.value)?.minus(1)
         nextWord()
     }
 }
